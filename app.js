@@ -9,6 +9,7 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { prisma } from "./lib/prisma.js";
 
 import indexRouter from "./routes/indexRouter.js";
+import loginRouter from "./routes/loginRouter.js";
 
 dotenv.config();
 
@@ -46,6 +47,15 @@ app.use((req, res, next) => {
 });
 
 app.use("/", indexRouter);
+app.use("/login", loginRouter);
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 app.listen(process.env.PORT, (error) => {
   if (error) {
