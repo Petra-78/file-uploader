@@ -1,5 +1,5 @@
-const { body } = require("express-validator");
-import { prisma } from './lib/prisma.js'
+import { body } from "express-validator";
+import { prisma } from "../lib/prisma.js";
 
 const signupValidator = [
   body("email")
@@ -9,33 +9,32 @@ const signupValidator = [
     .custom(async (value) => {
       const user = await prisma.users.findUnique({
         where: { email: value },
-        select: { id: true }
-    });
+        select: { id: true },
+      });
 
-      if (user.length > 0) {
+      if (user) {
         throw new Error("Account with this email already exists");
       }
 
       return true;
     }),
 
-body("username")
+  body("username")
     .trim()
     .isLength({ max: 20 })
     .withMessage("Username must be max 20 characters long")
     .custom(async (value) => {
       const user = await prisma.users.findUnique({
         where: { username: value },
-        select: { id: true }
-    });
+        select: { id: true },
+      });
 
-      if (user.length > 0) {
+      if (user) {
         throw new Error("Account with this username already exists");
       }
 
       return true;
     }),
-
 
   body("password")
     .trim()
@@ -54,4 +53,4 @@ body("username")
   }),
 ];
 
-module.exports = { signupValidator };
+export { signupValidator };
