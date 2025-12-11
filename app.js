@@ -5,12 +5,10 @@ import passport from "passport";
 import dotenv from "dotenv";
 import "./config/passport.js";
 import { fileURLToPath } from "node:url";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+import { prisma } from "./lib/prisma.js";
 
-// Routers
-// import signupRouter from "./routes/signupRouter.js";
-// import loginRouter from "./routes/loginRouter.js";
 import indexRouter from "./routes/indexRouter.js";
-// import messageRouter from "./routes/messageRouter.js";
 
 dotenv.config();
 
@@ -28,6 +26,13 @@ app.use(
     secret: process.env.SECRET_SESSION || "cats",
     resave: false,
     saveUninitialized: false,
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000,
+      dbRecordIdIsSessionId: true,
+    }),
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
   })
 );
 
@@ -41,24 +46,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/", indexRouter);
-
-// app.use("/log-in", loginRouter);
-// app.use("/sign-up", signupRouter);
-// app.get("/log-out", (req, res, next) => {
-//   req.logout((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.redirect("/");
-//   });
-// });
-
-// app.use("/new", messageRouter);
-
-// app.use((req, res) => {
-//   if (res.status(404)) res.render("404");
-//   else res.render("500");
-// });
 
 app.listen(process.env.PORT, (error) => {
   if (error) {
