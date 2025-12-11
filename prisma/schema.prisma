@@ -42,3 +42,10 @@ model Folders {
   children Folders[] @relation("FolderHierarchy")
   files    Files[]
 }
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.Text
+  expiresAt DateTime
+}
