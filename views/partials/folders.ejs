@@ -1,0 +1,14 @@
+<div class="folders-section">
+  <h2>Your Folders</h2>
+  <% if (folders && folders.length > 0) { %>
+  <ul class="folder-list">
+    <% folders.forEach(folder => { %>
+    <li>
+      <a href="/folders/<%= folder.id %>"><%= folder.name %></a>
+    </li>
+    <% }) %>
+  </ul>
+  <% } else { %>
+  <p>You have no folders yet. Create one above!</p>
+  <% } %>
+</div>
