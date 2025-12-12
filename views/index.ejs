@@ -4,18 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/sign-up.css" />
-    <title>Sign Up</title>
+    <title>Sign Up / Dashboard</title>
   </head>
   <body>
     <div class="main">
-      <% if(locals.user) { %>
+      <% if (locals.user) { %>
 
-      <a href="/new-file"><button>+ New file</button></a>
+      <div class="actions">
+        <a href="/new-file"><button>+ New file</button></a>
+        <a href="/new-folder"><button>+ New folder</button></a>
+        <p><a href="/logout">Log out</a></p>
+      </div>
 
-      <p><a href="/logout">Log out</a></p>
+      <div class="folders-section">
+        <h2>Your Folders</h2>
+        <% if (folders && folders.length > 0) { %>
+        <ul class="folder-list">
+          <% folders.forEach(folder => { %>
+          <li>
+            <a href="/folders/<%= folder.id %>"><%= folder.name %></a>
+          </li>
+          <% }) %>
+        </ul>
+        <% } else { %>
+        <p>You have no folders yet. Create one above!</p>
+        <% } %>
+      </div>
+
       <% } else { %>
       <form action="/sign-up" method="POST">
         <h1>Sign Up</h1>
+
         <label for="username">Username *</label>
         <input
           id="username"
@@ -29,15 +48,19 @@
 
         <label for="password">Password *</label>
         <input id="password" name="password" type="password" />
+
         <label for="confirm-password">Confirm password *</label>
         <input id="confirm-password" name="confirmPassword" type="password" />
+
         <ul>
-          <% if (errors) {%> <% errors.forEach((err)=>{ %>
-          <li class="error"><%= err.msg%></li>
-          <% }) } %>
+          <% if (errors) { %> <% errors.forEach((err) => { %>
+          <li class="error"><%= err.msg %></li>
+          <% }) %> <% } %>
         </ul>
+
         <button type="submit">Sign Up</button>
       </form>
+
       <p>Already have an account? <a href="/login">Login</a></p>
       <% } %>
     </div>
