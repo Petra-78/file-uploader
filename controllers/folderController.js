@@ -14,30 +14,26 @@ export async function createFolder(req, res) {
   res.redirect("/");
 }
 
-export async function renderFolders(req, res) {
-  const allFolders = await prisma.folders.findMany({
+export async function renderDashboard(req, res) {
+  if (!req.user) return res.render("index");
+
+  const folders = await prisma.folders.findMany({
     where: { userId: req.user.id, parentId: null },
   });
 
-  res.render("index", { folders: allFolders });
-}
-
-export async function viewFolder(req, res) {
-  const folderId = Number(req.params.id);
-
-  const folder = await prisma.folders.findUnique({
-    where: { id: folderId },
-    include: {
-      children: true,
-      files: true,
-    },
-  });
-
-  if (!folder || folder.userId !== req.user.id) {
-    return res.status(403).send("Unauthorized");
+  let currentFolder = null;
+  if (req.query.folderId) {
+    const folderId = Number(req.query.folderId);
+    const folder = await prisma.folders.findUnique({
+      where: { id: folderId },
+      include: { files: true, children: true },
+    });
+    if (folder && folder.userId === req.user.id) {
+      currentFolder = folder;
+    }
   }
 
-  res.render("folder-view", { folder });
+  res.render("index", { folders, currentFolder });
 }
 
 export async function deleteFolder(req, res) {
