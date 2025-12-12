@@ -1,14 +1,36 @@
-<div class="folders-section">
-  <h2>Your Folders</h2>
-  <% if (folders && folders.length > 0) { %>
-  <ul class="folder-list">
-    <% folders.forEach(folder => { %>
-    <li>
-      <a href="/folders/<%= folder.id %>"><%= folder.name %></a>
-    </li>
-    <% }) %>
-  </ul>
-  <% } else { %>
-  <p>You have no folders yet. Create one above!</p>
-  <% } %>
+<div class="dashboard">
+  <div class="sidebar">
+    <h2>Your Folders</h2>
+    <% if (folders && folders.length > 0) { %>
+    <ul>
+      <% folders.forEach(folder => { %>
+      <li>
+        <a href="/?folderId=<%= folder.id %>"><%= folder.name %></a>
+      </li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <p>No folders yet. Create one above!</p>
+    <% } %>
+  </div>
+
+  <div class="main-content">
+    <% if (currentFolder) { %>
+    <h3>Files in <%= currentFolder.name %></h3>
+    <% if (currentFolder.files.length > 0) { %>
+    <ul>
+      <% currentFolder.files.forEach(file => { %>
+      <li>
+        <a href="<%= file.fileUrl %>" download
+          ><%= file.fileUrl.split('/').pop() %></a
+        >
+      </li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <p>No files in this folder yet.</p>
+    <% } %> <% } else { %>
+    <p>Select a folder to see its files.</p>
+    <% } %>
+  </div>
 </div>
