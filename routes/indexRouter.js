@@ -10,8 +10,16 @@ const upload = multer({
   dest: path.join(process.cwd(), "public/uploads"),
 });
 
-router.get("/", renderFolders, (req, res) => {
-  res.render("index");
+router.get("/", async (req, res, next) => {
+  try {
+    if (req.user) {
+      await renderFolders(req, res, next);
+    } else {
+      res.render("index");
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post("/sign-up", signupValidator, signUp);
