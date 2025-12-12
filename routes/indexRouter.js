@@ -5,11 +5,12 @@ import { signUp, isAuthenticated } from "../controllers/authController.js";
 import { signupValidator } from "../validators/authValidator.js";
 import { postNewFile } from "../controllers/indexController.js";
 import multer from "multer";
+import { renderFolders } from "../controllers/folderController.js";
 const upload = multer({
   dest: path.join(process.cwd(), "public/uploads"),
 });
 
-router.get("/", (req, res) => {
+router.get("/", renderFolders, (req, res) => {
   res.render("index");
 });
 
