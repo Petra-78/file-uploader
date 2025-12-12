@@ -3,7 +3,7 @@ const router = Router();
 import passport from "passport";
 
 router.get("/", (req, res) => {
-  res.render("login");
+  res.render("partials/login");
 });
 
 router.post("/", (req, res, next) => {
@@ -11,7 +11,7 @@ router.post("/", (req, res, next) => {
     if (err) return next(err);
     if (!user) {
       console.log(info.message);
-      return res.render("login", { errors: [info.message] });
+      return res.render("partials/login", { errors: [info.message] });
     }
     req.login(user, (err) => {
       if (err) return next(err);
