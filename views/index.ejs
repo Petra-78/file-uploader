@@ -9,6 +9,9 @@
   <body>
     <div class="main">
       <% if(locals.user) { %>
+
+      <a href="/new-file"><button>+ New file</button></a>
+
       <p><a href="/logout">Log out</a></p>
       <% } else { %>
       <form action="/sign-up" method="POST">
