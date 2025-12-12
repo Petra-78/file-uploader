@@ -10,6 +10,7 @@ import { prisma } from "./lib/prisma.js";
 
 import indexRouter from "./routes/indexRouter.js";
 import loginRouter from "./routes/loginRouter.js";
+import folderRouter from "./routes/folderRouter.js";
 
 dotenv.config();
 
@@ -43,10 +44,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.errors = [];
+  res.locals.folders = [];
   next();
 });
 
 app.use("/", indexRouter);
+app.use("/", folderRouter);
 app.use("/login", loginRouter);
 app.get("/logout", (req, res, next) => {
   req.logout((err) => {
