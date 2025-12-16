@@ -5,7 +5,12 @@
     <ul>
       <% folders.forEach(folder => { %>
       <li>
-        <a href="/?folderId=<%= folder.id %>"><%= folder.name %></a>
+        <a href="/folders/<%= folder.id %>"><%= folder.name %></a>
+        <form action="/folders/<%= folder.id %>/delete" method="POST">
+          <button type="submit" onclick="return confirm('Delete this folder?')">
+            🗑️
+          </button>
+        </form>
       </li>
       <% }) %>
     </ul>
@@ -24,6 +29,15 @@
         <a href="<%= file.fileUrl %>" download
           ><%= file.fileUrl.split('/').pop() %></a
         >
+        <form
+          action="/files/<%= file.id %>/delete"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" onclick="return confirm('Delete this file?')">
+            🗑️
+          </button>
+        </form>
       </li>
       <% }) %>
     </ul>
