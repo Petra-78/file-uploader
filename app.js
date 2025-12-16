@@ -45,6 +45,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.errors = [];
   res.locals.folders = [];
+  res.locals.currentFolder = null;
   next();
 });
 
