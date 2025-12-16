@@ -26,9 +26,12 @@
     <ul>
       <% currentFolder.files.forEach(file => { %>
       <li>
-        <p><%= file.fileName %></p>
+        <a href="/folders/<%= currentFolder.id %>/<%= file.id %>"
+          ><%= file.fileName %></a
+        >
+
         <form
-          action="/files/<%= file.id %>/delete"
+          action="/folders/<%= currentFolder.id %>/<%= file.id %>/delete"
           method="POST"
           style="display: inline"
         >
