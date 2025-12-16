@@ -29,7 +29,9 @@
         >
           <button type="submit">Delete</button>
         </form>
-        <a href="<%= file.fileUrl %>" download><button>Download</button></a>
+        <a href="<%= file.fileUrl %>" download="<%= file.fileName %>">
+          <button>Download</button>
+        </a>
       </div>
     </div>
   </body>
