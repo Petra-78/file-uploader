@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/sign-up.css" />
+    <title>File Details</title>
+  </head>
+  <body>
+    <div class="file-details">
+      <h2>File Information</h2>
+      <p><strong>Name:</strong> <%= file.fileName %></p>
+      <p><strong>Type:</strong> <%= file.mimeType %></p>
+      <p>
+        <strong>Size:</strong> <%= (file.size / (1024*1024)).toFixed(2) %> MB
+      </p>
+      <p>
+        <strong>Created:</strong> <%= new
+        Date(file.createdAt).toLocaleString("en-US", { dateStyle: "long",
+        timeStyle: "short" }) %>
+      </p>
+
+      <div class="actions">
+        <a href="/folders/<%= file.folderId %>"><button>Back</button></a>
+        <form
+          action="/folders/<%= file.folderId %>/<%= file.id %>/delete"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">Delete</button>
+        </form>
+        <a href="<%= file.fileUrl %>" download><button>Download</button></a>
+      </div>
+    </div>
+  </body>
+</html>
