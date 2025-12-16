@@ -8,8 +8,13 @@
   <body>
     <div class="main">
       <form action="/new-folder" method="POST">
-        <input name="name" type="text" />
-        <button type="submit">Create</button>
+        <input type="text" name="name" placeholder="Folder name" required />
+
+        <% if (parentId) { %>
+        <input type="hidden" name="parentId" value="<%= parentId %>" />
+        <% } %>
+
+        <button type="submit">Create folder</button>
       </form>
     </div>
   </body>
