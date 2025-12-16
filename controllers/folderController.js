@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma.js";
 export async function createFolder(req, res) {
   const { name, parentId } = req.body;
 
-  await prisma.folders.create({
+  const folder = await prisma.folders.create({
     data: {
       name,
       userId: req.user.id,
@@ -11,7 +11,11 @@ export async function createFolder(req, res) {
     },
   });
 
-  res.redirect("/");
+  if (parentId) {
+    res.redirect(`/folders/${parentId}`);
+  } else {
+    res.redirect("/");
+  }
 }
 
 export async function renderDashboard(req, res) {
@@ -22,12 +26,15 @@ export async function renderDashboard(req, res) {
   });
 
   let currentFolder = null;
-  if (req.query.folderId) {
-    const folderId = Number(req.query.folderId);
+
+  if (req.params.id) {
+    const folderId = Number(req.params.id);
+
     const folder = await prisma.folders.findUnique({
       where: { id: folderId },
       include: { files: true, children: true },
     });
+
     if (folder && folder.userId === req.user.id) {
       currentFolder = folder;
     }
@@ -40,7 +47,15 @@ export async function deleteFolder(req, res) {
   const folderId = Number(req.params.id);
 
   await prisma.files.deleteMany({ where: { folderId } });
+
+  const childFolders = await prisma.folders.findMany({
+    where: { parentId: folderId },
+  });
+
+  for (const child of childFolders) {
+    await deleteFolder({ params: { id: child.id }, user: req.user }, res);
+  }
   await prisma.folders.delete({ where: { id: folderId } });
 
-  res.redirect("/folders");
+  res.redirect("/");
 }
