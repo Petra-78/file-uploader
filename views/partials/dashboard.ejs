@@ -1,5 +1,9 @@
 <div class="actions">
-  <a href="/new-file"><button>+ New file</button></a>
+  <% if (currentFolder) { %>
+  <a href="/folders/<%= currentFolder.id %>/new-file">
+    <button>+ New file</button>
+  </a>
+  <% } %>
   <a
     href="/new-folder<%= currentFolder ? `?parentId=${currentFolder.id}` : '' %>"
   >
