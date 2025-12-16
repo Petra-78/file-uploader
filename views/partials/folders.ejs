@@ -29,16 +29,6 @@
         <a href="/folders/<%= currentFolder.id %>/<%= file.id %>"
           ><%= file.fileName %></a
         >
-
-        <form
-          action="/folders/<%= currentFolder.id %>/<%= file.id %>/delete"
-          method="POST"
-          style="display: inline"
-        >
-          <button type="submit" onclick="return confirm('Delete this file?')">
-            🗑️
-          </button>
-        </form>
       </li>
       <% }) %>
     </ul>
