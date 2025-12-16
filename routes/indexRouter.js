@@ -3,7 +3,12 @@ import path from "node:path";
 const router = Router();
 import { signUp, isAuthenticated } from "../controllers/authController.js";
 import { signupValidator } from "../validators/authValidator.js";
-import { postFile, renderNewFileForm } from "../controllers/fileController.js";
+import {
+  postFile,
+  renderNewFileForm,
+  fileDetails,
+  deleteFile,
+} from "../controllers/fileController.js";
 import multer from "multer";
 import { renderDashboard } from "../controllers/folderController.js";
 const upload = multer({
@@ -21,5 +26,8 @@ router.post(
   upload.single("file"),
   postFile
 );
+
+router.get("/folders/:folderId/:fileId", isAuthenticated, fileDetails);
+router.post("/folders/:folderId/:fileId/delete", isAuthenticated, deleteFile);
 
 export default router;
