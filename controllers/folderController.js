@@ -1,20 +1,20 @@
 import { prisma } from "../lib/prisma.js";
 
-export async function createFolder(req, res) {
-  const { name, parentId } = req.body;
+export async function createFolder(req, res, next) {
+  try {
+    const { name, parentId } = req.body;
 
-  const folder = await prisma.folders.create({
-    data: {
-      name,
-      userId: req.user.id,
-      parentId: parentId ? Number(parentId) : null,
-    },
-  });
+    const folder = await prisma.folders.create({
+      data: {
+        name,
+        userId: req.user.id,
+        parentId: parentId ? Number(parentId) : null,
+      },
+    });
 
-  if (parentId) {
-    res.redirect(`/folders/${parentId}`);
-  } else {
-    res.redirect("/");
+    res.redirect(`/folders/${folder.id}`);
+  } catch (err) {
+    next(err);
   }
 }
 
