@@ -26,9 +26,7 @@
     <ul>
       <% currentFolder.files.forEach(file => { %>
       <li>
-        <a href="<%= file.fileUrl %>" download
-          ><%= file.fileUrl.split('/').pop() %></a
-        >
+        <p><%= file.fileName %></p>
         <form
           action="/files/<%= file.id %>/delete"
           method="POST"
