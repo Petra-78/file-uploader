@@ -7,8 +7,12 @@
   </head>
   <body>
     <div class="main">
-      <form action="/new-file" method="POST" enctype="multipart/form-data">
-        <input name="file" placeholder="Choose file" type="file" />
+      <form
+        action="/folders/<%= currentFolder.id %>/new-file"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="file" required />
         <button type="submit">Upload</button>
       </form>
     </div>
