@@ -4,6 +4,7 @@
     <button>+ New file</button>
   </a>
   <% } %>
+
   <a
     href="/new-folder<%= currentFolder ? `?parentId=${currentFolder.id}` : '' %>"
   >
@@ -11,4 +12,16 @@
   </a>
 
   <p><a href="/logout">Log out</a></p>
+</div>
+
+<div class="dashboard">
+  <div class="sidebar">
+    <h2>Your Folders</h2>
+    <ul class="folder-tree">
+      <%- include("folder-tree", { folders, allFolders, openPath, currentFolder
+      }) %>
+    </ul>
+  </div>
+
+  <div class="main-content"><%- include("files", { currentFolder }) %></div>
 </div>
