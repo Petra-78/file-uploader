@@ -13,11 +13,7 @@ f.parentId === folder.id); const isOpen = openPath.includes(folder.id); %>
     >
       📁 <%= folder.name %>
     </a>
-    <form
-      action="/folders/<%= folder.id %>/delete"
-      method="POST"
-      style="display: inline"
-    >
+    <form action="/folders/<%= folder.id %>/delete" method="POST">
       <button type="submit">🗑️</button>
     </form>
   </div>
