@@ -1,0 +1,17 @@
+<% if (currentFolder) { %>
+<h3>Files in <%= currentFolder.name %></h3>
+<% if (currentFolder.files.length > 0) { %>
+<ul>
+  <% currentFolder.files.forEach(file => { %>
+  <li>
+    <a href="/folders/<%= currentFolder.id %>/<%= file.id %>">
+      <%= file.fileName %>
+    </a>
+  </li>
+  <% }) %>
+</ul>
+<% } else { %>
+<p>No files in this folder yet.</p>
+<% } %> <% } else { %>
+<p>Select a folder to see its files.</p>
+<% } %>
