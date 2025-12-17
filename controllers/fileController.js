@@ -28,6 +28,20 @@ export async function postFile(req, res, next) {
       return res.status(400).send("No file uploaded");
     }
 
+    if (req.file.size > 5 * 1024 * 1024) {
+      return res.status(400).send("File too large");
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "application/pdf",
+      "text/plain",
+    ];
+    if (!allowedTypes.includes(req.file.mimetype)) {
+      return res.status(400).send("Invalid file type");
+    }
+
     const uploadFromBuffer = (buffer) =>
       new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
