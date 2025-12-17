@@ -5,12 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/sign-up.css" />
     <title>Sign Up / Dashboard</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div class="main">
-      <% if (locals.user) { %> <%- include ("partials/dashboard") %> <%- include
-      ("partials/folders") %> <% } else { %> <%- include('partials/sign-up') %>
-      <% } %>
+      <% if (locals.user) { %> <%- include("partials/dashboard", { folders,
+      currentFolder, openPath }) %> <% } else { %> <%-
+      include("partials/sign-up") %> <% } %>
     </div>
   </body>
+  <script>
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".toggle-btn");
+      if (!btn) return;
+
+      e.preventDefault();
+
+      const list = document.getElementById(btn.dataset.target);
+      if (!list) return;
+
+      list.classList.toggle("hidden");
+      btn.textContent = list.classList.contains("hidden") ? "▶" : "▼";
+    });
+  </script>
 </html>
