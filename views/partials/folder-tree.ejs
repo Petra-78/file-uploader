@@ -1,0 +1,35 @@
+<% folders.forEach(folder => { %> <% const children = allFolders.filter(f =>
+f.parentId === folder.id); const isOpen = openPath.includes(folder.id); %>
+
+<li>
+  <div class="folder-row">
+    <button class="toggle-btn" data-target="children-<%= folder.id %>">
+      <%= isOpen ? "▼" : "▶" %>
+    </button>
+
+    <a
+      href="/folders/<%= folder.id %>"
+      class="<%= currentFolder?.id === folder.id ? 'active' : '' %>"
+    >
+      📁 <%= folder.name %>
+    </a>
+    <form
+      action="/folders/<%= folder.id %>/delete"
+      method="POST"
+      style="display: inline"
+    >
+      <button type="submit">🗑️</button>
+    </form>
+  </div>
+
+  <% if (children.length > 0) { %>
+  <ul
+    id="children-<%= folder.id %>"
+    class="children <%= isOpen ? '' : 'hidden' %>"
+  >
+    <%- include("folder-tree", { folders: children, allFolders, openPath,
+    currentFolder }) %>
+  </ul>
+  <% } %>
+</li>
+<% }) %>
