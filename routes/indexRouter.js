@@ -9,11 +9,8 @@ import {
   fileDetails,
   deleteFile,
 } from "../controllers/fileController.js";
-import multer from "multer";
 import { renderDashboard } from "../controllers/folderController.js";
-const upload = multer({
-  dest: path.join(process.cwd(), "public/uploads"),
-});
+import { upload } from "../config/multer.js";
 
 router.get("/", renderDashboard);
 
