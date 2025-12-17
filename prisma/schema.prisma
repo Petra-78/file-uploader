@@ -22,16 +22,17 @@ model Users {
 }
 
 model Files {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   fileName  String   
   fileUrl   String   
   mimeType  String   
   size      Int     
   folderId  Int
   folder    Folders   @relation(fields: [folderId], references: [id])
-  userId Int
-  user Users @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  userId    Int
+  user      Users     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  publicId  String
 }
 
 model Folders {
