@@ -1,6 +1,5 @@
 import { prisma } from "../lib/prisma.js";
-import path from "node:path";
-import fs from "fs/promises";
+import cloudinary from "../config/cloudinary.js";
 
 export async function createFolder(req, res, next) {
   try {
@@ -55,46 +54,43 @@ export async function renderDashboard(req, res) {
   });
 }
 
-export async function deleteFolder(req, res) {
-  const folderId = Number(req.params.id);
-  const files = await prisma.files.findMany({ where: { folderId } });
-  for (const file of files) {
-    try {
-      await fs.unlink(path.join(process.cwd(), "public", file.fileUrl));
-    } catch (err) {
-      console.error(`Failed to delete file ${file.fileUrl}:`, err);
+export async function deleteFolder(req, res, next) {
+  try {
+    const folderId = Number(req.params.id);
+
+    const folder = await prisma.folders.findUnique({ where: { id: folderId } });
+    if (!folder || folder.userId !== req.user.id) {
+      return res.status(403).send("Unauthorized");
     }
-  }
-  await prisma.files.deleteMany({ where: { folderId } });
 
-  const childFolders = await prisma.folders.findMany({
-    where: { parentId: folderId },
-  });
+    const files = await prisma.files.findMany({ where: { folderId } });
+    for (const file of files) {
+      if (file.publicId) {
+        try {
+          await cloudinary.uploader.destroy(file.publicId, {
+            resource_type: "raw",
+          });
+        } catch (err) {
+          console.error(
+            `Failed to delete Cloudinary file ${file.fileUrl}:`,
+            err
+          );
+        }
+      }
+      await prisma.files.delete({ where: { id: file.id } });
+    }
 
-  for (const child of childFolders) {
-    await deleteFolder({ params: { id: child.id }, user: req.user }, res);
-  }
-  await prisma.folders.delete({ where: { id: folderId } });
-
-  res.redirect("/");
-}
-
-async function getFolderPath(folderId) {
-  const path = [];
-
-  let current = await prisma.folders.findUnique({
-    where: { id: folderId },
-  });
-
-  while (current) {
-    path.unshift(current.id);
-
-    if (!current.parentId) break;
-
-    current = await prisma.folders.findUnique({
-      where: { id: current.parentId },
+    const childFolders = await prisma.folders.findMany({
+      where: { parentId: folderId },
     });
-  }
+    for (const child of childFolders) {
+      await deleteFolder({ params: { id: child.id }, user: req.user }, res);
+    }
 
-  return path;
+    await prisma.folders.delete({ where: { id: folderId } });
+
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
 }
