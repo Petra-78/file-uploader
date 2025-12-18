@@ -18,6 +18,13 @@ router.get("/new-folder", isAuthenticated, (req, res) => {
 router.post("/new-folder", isAuthenticated, createFolder);
 
 router.get("/folders/:id", isAuthenticated, renderDashboard);
-router.post("/folders/:id/delete", isAuthenticated, deleteFolder);
+router.post(
+  "/folders/:id/delete",
+  isAuthenticated,
+  deleteFolder,
+  (req, res) => {
+    res.redirect("/");
+  }
+);
 
 export default router;

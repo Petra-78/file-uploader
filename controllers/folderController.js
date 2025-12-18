@@ -97,7 +97,7 @@ export async function deleteFolder(req, res, next) {
 
     await prisma.folders.delete({ where: { id: folderId } });
 
-    res.redirect("/");
+    next();
   } catch (err) {
     next(err);
   }
