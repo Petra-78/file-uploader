@@ -3,18 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/index.css" />
     <title>Add new file</title>
   </head>
   <body>
     <div class="main">
       <form
+        class="upload-form"
         action="/folders/<%= currentFolder.id %>/new-file"
         method="POST"
         enctype="multipart/form-data"
       >
-        <input type="file" name="file" required />
+        <h1>Upload file</h1>
+
+        <label class="file-drop">
+          <input type="file" name="file" required />
+          <span class="file-text">
+            Click to choose a file<br />
+            <small>or drag & drop</small>
+          </span>
+        </label>
+
         <button type="submit">Upload</button>
       </form>
     </div>
+
+    <script>
+      const input = document.querySelector('input[type="file"]');
+      const text = document.querySelector(".file-text");
+
+      input.addEventListener("change", () => {
+        if (input.files.length > 0) {
+          text.innerHTML = `<strong>${input.files[0].name}</strong>`;
+        }
+      });
+    </script>
   </body>
 </html>
