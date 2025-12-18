@@ -20,38 +20,46 @@ export async function createFolder(req, res, next) {
 }
 
 export async function renderDashboard(req, res) {
-  if (!req.user) return res.render("index");
+  try {
+    if (!req.user) return res.render("index");
 
-  const allFolders = await prisma.folders.findMany({
-    where: { userId: req.user.id },
-  });
-
-  let currentFolder = null;
-
-  if (req.params.id) {
-    const folderId = Number(req.params.id);
-    const folder = await prisma.folders.findUnique({
-      where: { id: folderId },
-      include: { files: true },
+    const allFolders = await prisma.folders.findMany({
+      where: { userId: req.user.id },
     });
-    if (folder) currentFolder = folder;
-  }
 
-  let openPath = [];
-  if (currentFolder) {
-    let parent = currentFolder;
-    while (parent?.parentId) {
-      openPath.push(parent.parentId);
-      parent = allFolders.find((f) => f.id === parent.parentId);
+    let currentFolder = null;
+
+    if (req.params.id) {
+      const folderId = Number(req.params.id);
+      currentFolder = await prisma.folders.findUnique({
+        where: { id: folderId },
+        include: { files: true },
+      });
+
+      if (!currentFolder) {
+        return res.redirect("/error");
+      }
     }
-  }
 
-  res.render("index", {
-    folders: allFolders.filter((f) => !f.parentId),
-    allFolders,
-    currentFolder,
-    openPath,
-  });
+    let openPath = [];
+    if (currentFolder) {
+      let parent = currentFolder;
+      while (parent?.parentId) {
+        openPath.push(parent.parentId);
+        parent = allFolders.find((f) => f.id === parent.parentId);
+      }
+    }
+
+    res.render("index", {
+      folders: allFolders.filter((f) => !f.parentId),
+      allFolders,
+      currentFolder,
+      openPath,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.render("error");
+  }
 }
 
 export async function deleteFolder(req, res, next) {

@@ -7,7 +7,11 @@ export async function renderNewFileForm(req, res, next) {
     const folder = await prisma.folders.findUnique({ where: { id: folderId } });
 
     if (!folder || folder.userId !== req.user.id) {
-      return res.status(403).send("Unauthorized");
+      return res.status(403).render("error", {
+        status: 403,
+        title: "Unauthorized",
+        message: "Something went wrong",
+      });
     }
 
     res.render("partials/new-file", { currentFolder: folder });
@@ -21,7 +25,11 @@ export async function postFile(req, res, next) {
     const folderId = Number(req.params.folderId);
     const folder = await prisma.folders.findUnique({ where: { id: folderId } });
     if (!folder || folder.userId !== req.user.id) {
-      return res.status(403).send("Unauthorized");
+      return res.status(403).render("error", {
+        status: 403,
+        title: "Unauthorized",
+        message: "Something went wrong",
+      });
     }
 
     if (!req.file) {
@@ -29,7 +37,11 @@ export async function postFile(req, res, next) {
     }
 
     if (req.file.size > 5 * 1024 * 1024) {
-      return res.status(400).send("File too large");
+      return res.status(400).render("error", {
+        status: 400,
+        title: "File size too big",
+        message: "",
+      });
     }
 
     const allowedTypes = [
@@ -39,7 +51,11 @@ export async function postFile(req, res, next) {
       "text/plain",
     ];
     if (!allowedTypes.includes(req.file.mimetype)) {
-      return res.status(400).send("Invalid file type");
+      return res.status(400).render("error", {
+        status: 400,
+        title: "Invalid file type",
+        message: "",
+      });
     }
 
     const uploadFromBuffer = (buffer) =>
@@ -86,7 +102,11 @@ export async function fileDetails(req, res, next) {
     });
 
     if (!file || file.userId !== req.user.id) {
-      return res.status(403).send("Unauthorized");
+      return res.status(403).render("error", {
+        status: 403,
+        title: "Unauthorized",
+        message: "Something went wrong",
+      });
     }
 
     res.render("partials/file-details", { file, folderId: file.folderId });
@@ -101,7 +121,11 @@ export async function deleteFile(req, res, next) {
     const file = await prisma.files.findUnique({ where: { id: fileId } });
 
     if (!file || file.userId !== req.user.id) {
-      return res.status(403).send("Unauthorized");
+      return res.status(403).render("error", {
+        status: 403,
+        title: "Unauthorized",
+        message: "Something went wrong",
+      });
     }
 
     if (file.publicId) {
