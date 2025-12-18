@@ -61,6 +61,22 @@ app.get("/logout", (req, res, next) => {
   });
 });
 
+app.use((req, res, next) => {
+  const err = new Error("Page not found");
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.status || 500).render("error", {
+    status: err.status || 500,
+    title: err.status === 403 ? "Access denied" : "Server error",
+    message: err.message || "Something went wrong. Please try again later.",
+  });
+});
+
 app.listen(process.env.PORT, (error) => {
   if (error) {
     throw error;
