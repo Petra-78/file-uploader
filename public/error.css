@@ -1,0 +1,74 @@
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.error-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212;
+}
+
+.error-card {
+  background-color: #1f1f1f;
+  border-radius: 14px;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+}
+
+.error-card h1 {
+  font-size: 4rem;
+  margin: 0;
+  color: #bf616a;
+}
+
+.error-card h2 {
+  margin: 0.5rem 0 1rem;
+  color: #e0e0e0;
+  font-size: 1.3rem;
+}
+
+.error-card p {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.error-actions button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  background-color: #3a3f4b;
+  color: #e0e0e0;
+  font-weight: 500;
+  transition: background-color 0.2s, transform 0.05s;
+}
+
+.error-actions button:hover {
+  background-color: #505761;
+}
+
+.error-actions button:active {
+  transform: scale(0.97);
+}
+
+.error-actions a button {
+  background-color: #81a1c1;
+  color: #121212;
+}
+
+.error-actions a button:hover {
+  background-color: #5e81ac;
+}
