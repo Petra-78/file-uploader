@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/index.css" />
+    <link
+      rel="stylesheet"
+      href="/web_modules/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+
     <title>Sign Up / Dashboard</title>
     <style>
       .hidden {
@@ -29,7 +34,12 @@
       if (!list) return;
 
       list.classList.toggle("hidden");
-      btn.textContent = list.classList.contains("hidden") ? "▶" : "▼";
+
+      const icon = btn.querySelector("i");
+      if (icon) {
+        icon.classList.toggle("fa-angle-right");
+        icon.classList.toggle("fa-angle-down");
+      }
     });
   </script>
 </html>

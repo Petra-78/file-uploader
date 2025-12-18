@@ -1,10 +1,10 @@
-<% folders.forEach(folder => { %> <% const children = allFolders.filter(f =>
+<% folders.forEach(folder => { const children = allFolders.filter(f =>
 f.parentId === folder.id); const isOpen = openPath.includes(folder.id); %>
 
 <li>
   <div class="folder-row">
     <button class="toggle-btn" data-target="children-<%= folder.id %>">
-      <%= isOpen ? "▼" : "▶" %>
+      <%- isOpen ? '<i class="fa-solid fa-angle-down"></i>' : '<i class="fa-solid fa-angle-right"></i>' %>
     </button>
 
     <a
@@ -13,8 +13,9 @@ f.parentId === folder.id); const isOpen = openPath.includes(folder.id); %>
     >
       <%= folder.name %>
     </a>
+
     <form action="/folders/<%= folder.id %>/delete" method="POST">
-      <button type="submit">🗑️</button>
+      <button type="submit"><i class="fa-solid fa-trash"></i></button>
     </form>
   </div>
 

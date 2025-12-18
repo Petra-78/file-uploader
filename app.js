@@ -40,6 +40,10 @@ app.use(
 
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  "/web_modules",
+  express.static(path.join(process.cwd(), "node_modules"))
+);
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
