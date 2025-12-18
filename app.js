@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import "./config/passport.js";
 import { fileURLToPath } from "node:url";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-import { prisma } from "./lib/prisma.js";
+import prisma from "./lib/prisma.js";
 
 import indexRouter from "./routes/indexRouter.js";
 import loginRouter from "./routes/loginRouter.js";

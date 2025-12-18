@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma.js";
+import prisma from "../lib/prisma.js";
 import cloudinary from "../config/cloudinary.js";
 
 export async function createFolder(req, res, next) {

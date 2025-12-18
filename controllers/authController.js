@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
-import { prisma } from "../lib/prisma.js";
+import prisma from "../lib/prisma.js";
 
 export function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();

@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { prisma } from "../lib/prisma.js";
+import prisma from "../lib/prisma.js";
 
 const signupValidator = [
   body("email")
